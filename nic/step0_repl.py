@@ -21,6 +21,7 @@ def rep(rep_in):
 while True:
     try:
         usr_input = input("user> ")
+        print(rep(usr_input))
     except EOFError:
-        usr_input = None
-    print(rep(usr_input))
+        break
+
