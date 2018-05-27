@@ -22,6 +22,8 @@ def read_form(reader):
     first = reader.peek()
     if first == "(":
         return read_list(reader)
+    elif first == '[':
+        return read_vector(reader)
     else:
         return read_atom(reader)
 
@@ -35,11 +37,14 @@ def read_atom(reader):
         return Symbol(token)
 
 
-def read_list(reader):
+def read_sequence(reader, start='(', end=')'):
     # Create the start of the list expression and increment reader
-    reader.next()
+    token = reader.next()
     expressions = list()
-    while reader.peek() != ')' and reader.peek() is not None:
+    if token != start:
+        raise Exception('Expected ' + start + " found " + token)
+
+    while reader.peek() != end and reader.peek() is not None:
         expressions.append(read_form(reader))
 
     if reader.peek() is None:
@@ -48,6 +53,13 @@ def read_list(reader):
     reader.next()
     return expressions
 
+
+def read_vector(reader):
+    return read_sequence(reader, start='[', end=']')
+
+
+def read_list(reader):
+    return read_sequence(reader)
 
 class Reader:
 

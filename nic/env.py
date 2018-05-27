@@ -1,8 +1,11 @@
 class Env:
 
-    def __init__(self, outer=None):
+    def __init__(self, outer=None, binds=None, exprs=None):
         self.data = {}
         self.outer = outer
+        if binds:
+            for i in range(0, len(binds)):
+                self.set(binds[i], exprs[i])
 
     def set(self, key, value):
         """Takes symbol key and adds to datastructure"""
