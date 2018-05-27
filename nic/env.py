@@ -20,7 +20,7 @@ class Env:
         elif self.outer is None:
             return None
         else:
-            self.find(self.outer)
+            return self.outer.find(key)
 
     def get(self, key):
         """
