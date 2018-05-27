@@ -33,8 +33,17 @@ def read_atom(reader):
     token = reader.next()
     if is_int(token):
         return int(token)
+    elif token == 'nil':
+        return None
+    elif token == 'true':
+        return True
+    elif token == 'false':
+        return False
     elif type(token) is str:
-        return Symbol(token)
+        if token[0] == '"':
+            return token
+        else:
+            return Symbol(token)
 
 
 def read_sequence(reader, start='(', end=')'):

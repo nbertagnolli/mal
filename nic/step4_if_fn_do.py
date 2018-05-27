@@ -2,6 +2,7 @@ import reader
 import printer
 import operator
 from env import Env
+from core import ns
 
 from mal_types import *
 
@@ -83,11 +84,10 @@ def rep(rep_in):
 
 
 repl_env = Env()
-repl_env.set('+', lambda a, b: a + b)
-repl_env.set('-', lambda a, b: a - b)
-repl_env.set('*', lambda a, b: a * b)
-repl_env.set('/', lambda a, b: int(a / b))
 
+# Add namespace variables to repl environment
+for key, value in ns.items():
+    repl_env.set(key, value)
 
 while True:
     try:
