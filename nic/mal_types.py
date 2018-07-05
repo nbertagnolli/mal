@@ -16,8 +16,27 @@ class List(list):
     def __getslice__(self, *a):
         return List(list.__getslice__(self, *a))
 
+
 class Symbol(str):
     pass
 
+
 class Number():
     pass
+
+
+def _function(Eval, Env, ast, env, params):
+    def func(*args):
+        new_env = Env(outer=env, binds=params, exprs=list(args))
+        return Eval(ast, new_env)
+
+    func.__ast__ = ast
+    func.__gen_env__ = lambda args: Env(outer=env, binds=params, exprs=args)
+    return func
+
+
+class Atom:
+    def __init__(self, val):
+        self.val = val
+
+

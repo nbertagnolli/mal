@@ -9,6 +9,7 @@ def is_int(s):
     except:
         return False
 
+
 def read_str(string):
     return read_form(Reader(tokenizer(string)))
 
@@ -20,6 +21,10 @@ def tokenizer(string):
 
 def read_form(reader):
     first = reader.peek()
+    # Ignore comments
+    if first[0] == ';':
+        reader.next()
+        return None
     if first == "(":
         return read_list(reader)
     elif first == '[':
@@ -27,6 +32,9 @@ def read_form(reader):
     else:
         return read_atom(reader)
 
+
+def _unescape(s):
+    return s.replace('\\\\', '\u029e').replace('\\"', '"').replace('\\n', '\n').replace('\u029e', '\\')
 
 def read_atom(reader):
     # Figure out type
@@ -40,8 +48,8 @@ def read_atom(reader):
     elif token == 'false':
         return False
     elif type(token) is str:
-        if token[0] == '"':
-            return token
+        if len(token) > 0 and token[0] == '"' and token[-1] == '"':
+            return _unescape(token[1:-1])
         else:
             return Symbol(token)
 
@@ -69,6 +77,7 @@ def read_vector(reader):
 
 def read_list(reader):
     return read_sequence(reader)
+
 
 class Reader:
 
